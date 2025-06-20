@@ -1,0 +1,16 @@
+feature_validation:
+  - usage: fusion_map
+    feature_name: inputs.proto.fusion_sdmap
+    downsample: 5
+    validations:
+      - trip_id: "13490942"
+        case_id: "4702779"
+        fields:
+          - key: guidance.step_main_action
+            value: 7
+            ratio_threshold: 0.8
+          - key: guidance.step_main_action
+            value: 7
+            ratio_threshold: 0.8
+            start_timestamp: 1737545777700000
+            end_timestamp: 1737545803700000

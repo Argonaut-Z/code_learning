@@ -1,0 +1,105 @@
+workspace:
+  test_key: "test_value"
+  test_list:
+    - 1
+    - 2
+    - 3
+  pythonpath:
+    # - /mnt/csi-data-aly/shared/shenzhen/ppsim/trajcaching_v3/debs/melodic/lib/python2.7/dist-packages/
+    - /mnt/csi-data-aly/shared/shenzhen/ppsim/trajcaching_v3/debs/proto
+    - /mnt/csi-data-aly/shared/shenzhen/ppsim/trajcaching_v3/debs/scenariohouse
+  pip:
+    - trajcaching==3.0.0+a6177556
+  # env_vars:
+  #   CPU_PER_WORKER: "24"
+
+graph_name: LayerPdGraphPool
+stage:
+  - 
+    - name: "PdDpbagExtractorNode"
+  -
+    - name: 'DownsampleNode'
+      downsample_interval: 10
+  -
+    - name: InputsProtoMapRasmapPlusNode
+    - name: InputsProtoRasmapPlusNode
+    - name: InputsProtoTrafficLightNode
+    - name: InputsFeatureMapV5Node
+    - name: InputsOccupancyEnvNode
+    - name: InputsOccupancyPastAgentNode
+    - name: TargetsStructureFutureAgentNode
+    - name: TargetsStructureFutureAgentV2Node
+    - name: TargetsStructureFutureCarStatusNode
+    - name: InputsStructurePastAgentNode
+    - name: InputsStructurePastAgentV2Node
+    - name: InputsStructurePastAgentLightNode
+    - name: InputsRawDataCamera1Node
+    - name: InputsRawDataC1SeqNode
+    - name: InputsOccupancySDMapNode
+    - name: InputsOccupancySDMapV2Node
+    - name: InputsProtoAgentMapNode
+    - name: TargetsStructureAgentsTrajectoryTraceV8Node
+    - name: InputsProtoMapFusionSdMapNode
+    - name: InputsProtoAMapFusionSdMapNode
+    - name: InputsProtoEditPlanningNode
+    - name: InputsTargetsStructureCarInfoNode
+    - name: TargetsStructureAgentsTrajectoryTraceRefineNode
+  -
+    - name: FeatureToRecordNode
+      required_features:
+        - inputs.proto.rasmapplus
+        - inputs.occupancy.anchor_env_v2
+        - inputs.occupancy.past_agent
+        - inputs.occupancy.past_adc
+        - inputs.occupancy.past_agent_map
+        - inputs.occupancy.past_trajectory
+        - inputs.occupancy.past_trajectory_img
+        - inputs.proto.adc_info
+        - inputs.structure.past_agent_info
+        - inputs.structure.past_agent_info_v2
+        - targets.structure.future_agent_info
+        - targets.structure.future_agent_info_v2
+        - targets.structure.future_ego_info
+        # # - inputs.proto.edit_planning
+      optional_features:
+        - inputs.feature_map_v5
+        - inputs.proto.agent_map_info
+        - inputs.proto.traffic_light_response
+        - inputs.proto.map_rasmapplus
+        - inputs.occupancy.sdmap_routing_img
+        - inputs.occupancy.sdmap_horizon_map_img_v2
+        - inputs.occupancy.sdmap_routing_img_v2
+        - inputs.occupancy.sdmap_horizon_map_img_v4
+        - targets.structure.agents_trajectory_trace_v8
+        - inputs.structure.past_car_info
+        - targets.structure.future_car_info
+        - targets.structure.agents_trajectory_trace_refine
+        - inputs.proto.fusion_sdmap
+        - inputs.proto.fusion_sdmap_amap
+        - inputs.raw_data.camera_1
+        - inputs.raw_data.c1_seq_v1
+
+data_configs:
+###### input_type ########
+# 1. perception_backfill : backfill result
+# 2. feishu_id : feishu issue in feishu application
+# 3. bag: bag name in feishu application
+# 4. single_frame: single frame data from farseer
+  input_type: 'perception_backfill'
+
+# image_tag and input_dir required if perception_backfill type
+  image_tag: "1725362352.924385"
+  input_dir: '/pp_ci'
+# version
+  version: 'v1'
+# 支持dict、pickle_path配置(优先使用pickle_path配置)，格式是 trip_id: [case_ids|bag_names|feishu_ids]
+  trip_case_ids:
+    320473:
+      - 2806585
+    # 14941348:
+    #   - 4716858
+    # 11699334
+    #   - 4654362
+# dataframe save_dir
+  save_dir: "/tmp/feature_bmk"
+  record_save_dir: "/tmp/feature_bmk/record"
