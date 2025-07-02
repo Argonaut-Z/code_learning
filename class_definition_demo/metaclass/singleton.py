@@ -31,6 +31,7 @@ class MySingleton2(metaclass=Singleton):
         print("init called")
         self.value = value
 
+
 a = MySingleton1(10)
 b = MySingleton1(20)
 
@@ -48,3 +49,13 @@ print(d.value)  # 10：值没有改变
 
 
 
+class Singleton(type):
+    _instances = {"meta": "元类属性"}
+
+class MyClass(metaclass=Singleton):
+    pass
+
+print(MyClass._instances)  # 输出: {"meta": "元类属性"}
+print(MyClass._instances is Singleton._instances)  # 输出: True
+
+print('-' * 50)
